@@ -1,0 +1,17 @@
+body {
+    background: linear-gradient(75deg, #d9d1e0, #432d5c);
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
+#time {
+    text-align: center;
+    font-size: 100px;
+    color: #ffffff;
+    cursor: pointer;
+}
