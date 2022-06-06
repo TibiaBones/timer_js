@@ -1,8 +1,11 @@
 body {
     background: linear-gradient(75deg, #d9d1e0, #432d5c);
+    font-family: 'PT Mono', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 70px;
 }
 
-div {
+.flexContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -11,7 +14,11 @@ div {
 
 #time {
     text-align: center;
-    font-size: 100px;
     color: #ffffff;
     cursor: pointer;
+    display: block;
+    user-select: none;
+    margin: auto;
+    /* justify-content: space-evenly; */
+    /* padding: 30%; */
 }
