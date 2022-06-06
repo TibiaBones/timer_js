@@ -1,61 +1,60 @@
-let timer = document.getElementById("time");
-let centiseconds = document.getElementById("centiseconds").textContent;
-let seconds = document.getElementById("seconds").textContent;
-let minets = document.getElementById("minets").textContent;
-let timerid;
-
-timer.addEventListener("click", timerid = function() {
-    setInterval(function() {
-        let localCentiseconds = +centiseconds;
-        let localSeconds = +seconds;
-        let localMinets = +minets;
-
-        ++localCentiseconds;
-        if (localCentiseconds == 100) {
-            localCentiseconds = 0;
-            localSeconds += 1;
-            centiseconds = String(localCentiseconds);
-        } else {
-            centiseconds = String(localCentiseconds);
-        };
-        if (localSeconds == 60) {
-            localSeconds = 0;
-            localMinets += 1;
-            seconds = String(localSeconds);
-        } else {
-            seconds = String(localSeconds);
-        };
-        if (localMinets == 100) {
-            clearInterval(timerid);
-            minets = String(localMinets);
-        } else {
-            minets = String(localMinets);
-        };
-
-        if (localCentiseconds < 10) {
-            centiseconds = "0" + localCentiseconds;
-        }
-        if (localSeconds < 10) {
-            seconds = "0" + localSeconds;
-        }
-        if (localMinets < 10) {
-            minets = "0" + localMinets;
-        }
-
-        document.getElementById("centiseconds").textContent = `${centiseconds}`;
-        document.getElementById("seconds").textContent = `${seconds}`;
-        document.getElementById("minets").textContent = `${minets}`;
-        timer.addEventListener("click", clearInterval(timerid));
-    }, 10);
-})
+let timeBegan = null; // часы запустились?
+let timeStopped = null; // в какое время был остановлен таймер?
+let stopDuration = 0; // сколько времени таймер был остановлен?
+let startInterval = null; // это для остановки setInterval()
+let timerState = false; // состояние таймера. нужно для управления остановкой и запуском таймера
 
 
+const timer = document.getElementById("time");
+timer.addEventListener("click", function() {
+    if (!timerState) {
+        startTimer();
+        timerState = true;
+    } else {
+        stopTimer();
+        timerState = false;
+    }
+});
 
+timer.addEventListener("dblclick", function() {
+    clearInterval(startInterval);
+    timeBegan = null;
+    timeStopped = null;
+    stopDuration = 0;
+    timerState = false;
+    document.getElementById("minutes").textContent = "00";
+    document.getElementById("seconds").textContent = "00";
+    document.getElementById("centiseconds").textContent = "00";
+});
 
+function startTimer() {
+    if (timeBegan === null) {
+        timeBegan = new Date();
+    };
+    if (timeStopped !== null) {
+        stopDuration += (new Date() - timeStopped);
+    };
 
+    startInterval = setInterval(timerRunning, 10);
+};
 
+function stopTimer() {
+    timeStopped = new Date();
+    clearInterval(startInterval);
+};
 
+function timerRunning() {
+    let currentTime = new Date();
+    let timeElapsed = new Date(currentTime - timeBegan - stopDuration);
 
+    let minutes = timeElapsed.getUTCMinutes();
+    let seconds = timeElapsed.getUTCSeconds();
+    let centiseconds = Math.floor((timeElapsed.getUTCMilliseconds()) / 10);
+
+    document.getElementById("minutes").textContent = `${minutes = minutes < 10 ? "0" + minutes : minutes}`;
+    document.getElementById("seconds").textContent = `${seconds = seconds < 10 ? "0" + seconds : seconds}`;
+    document.getElementById("centiseconds").textContent = `${centiseconds = centiseconds < 10 ? "0" + centiseconds : centiseconds}`;
+}
 
 
 
